@@ -1,0 +1,30 @@
+{
+  "name": "mobial_legends",
+  "version": "1.0.0",
+  "description": "Platform to create strategies for MObile Legends",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/andresguc1/MobIAl_legends.git"
+  },
+  "keywords": [
+    "Mobile",
+    "Legends",
+    "Moba",
+    "Strategies"
+  ],
+  "author": "Blaxter",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/andresguc1/MobIAl_legends/issues"
+  },
+  "homepage": "https://github.com/andresguc1/MobIAl_legends#readme",
+  "dependencies": {
+    "express": "^4.18.2",
+    "langchain": "^0.0.197-rc.1",
+    "openai": "^4.20.0"
+  }
+}

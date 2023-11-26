@@ -1,0 +1,2 @@
+API openai
+export OPENAIAPIKEY = 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
