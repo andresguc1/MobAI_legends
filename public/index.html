@@ -3,9 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hero Info Input</title>
+    <script src="./index.js" defer></script>
+    <title>Mobia Manager</title>
   </head>
   <body>
+    <h1>Welcome to MOBIA</h1>
     <h1>Enter Hero Info</h1>
     <form id="heroForm" onsubmit="submitForm(event)">
       <label for="heroName">Hero Name:</label>
@@ -76,74 +78,6 @@
         <h3>Emblem:</h3>
         <div id="emblemResult"></div>
       </div>
-
-      <div>
-        <h3>Strategy:</h3>
-        <pre id="strategyResult"></pre>
-      </div>
     </div>
-
-    <script>
-      async function submitForm(event) {
-        event.preventDefault()
-
-        const heroData = {
-          heroName: document.getElementById('heroName').value,
-          heroRole: document.getElementById('heroRole').value,
-          playerteam: {
-            roam: document.getElementById('roam').value,
-            gold: document.getElementById('gold').value,
-            mid: document.getElementById('mid').value,
-            jungle: document.getElementById('jungle').value,
-            exp: document.getElementById('exp').value,
-          },
-          enemyTeam: {
-            roam: document.getElementById('enemyRoam').value,
-            gold: document.getElementById('enemyGold').value,
-            mid: document.getElementById('enemyMid').value,
-            jungle: document.getElementById('enemyJungle').value,
-            exp: document.getElementById('enemyExp').value,
-          },
-        }
-
-        try {
-          const response = await fetch('/createStrategy', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(heroData),
-          })
-
-          if (response.ok) {
-            const createStrategyResult = await response.json()
-
-            document.getElementById(
-              'heroNameResult'
-            ).innerText = `Hero Name: ${createStrategyResult.heroName}`
-            document.getElementById(
-              'equipmentResult'
-            ).innerText = `Equipment: ${createStrategyResult.equipment}`
-            document.getElementById(
-              'battleSpellResult'
-            ).innerText = `Battle Spell: ${createStrategyResult.battleSpell}`
-            document.getElementById(
-              'emblemResult'
-            ).innerText = `Emblem: ${createStrategyResult.emblem}`
-            document.getElementById(
-              'strategyResult'
-            ).innerText = `Strategy: ${JSON.stringify(
-              createStrategyResult.strategy,
-              null,
-              2
-            )}`
-          } else {
-            console.error('Error in submitForm:', response.statusText)
-          }
-        } catch (error) {
-          console.error('Error in submitForm:', error.message)
-        }
-      }
-    </script>
   </body>
 </html>
