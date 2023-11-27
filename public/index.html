@@ -3,80 +3,125 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./styles.css" />
     <script src="./index.js" defer></script>
     <title>Mobia Manager</title>
   </head>
   <body>
     <h1>Welcome to MOBIA</h1>
-    <h1>Enter Hero Info</h1>
-    <form id="heroForm" onsubmit="submitForm(event)">
-      <label for="heroName">Hero Name:</label>
-      <input type="text" id="heroName" name="heroName" required /><br />
 
-      <label for="heroRole">Hero Role:</label>
-      <input type="text" id="heroRole" name="heroRole" required /><br />
+    <div class="container">
+      <h2>Enter Hero Info</h2>
+      <form id="heroForm" onsubmit="submitForm(event)">
+        <div class="hero-info">
+          <label for="heroName">Hero Name:</label>
+          <select id="heroName" name="heroName" required>
+            <option value="Balmond">Balmond</option>
+            <option value="Layla">Layla</option>
+            <option value="Zilong">Zilong</option>
+            <option value="Nana">Nana</option>
+            <option value="Saber">Saber</option>
+            <option value="Eudora">Eudora</option>
+            <option value="Alice">Alice</option>
+            <option value="Franco">Franco</option>
+            <option value="Miya">Miya</option>
+            <option value="Gord">Gord</option>
+            <option value="Lolita">Lolita</option>
+            <option value="Hayabusa">Hayabusa</option>
+            <option value="Freya">Freya</option>
+            <option value="Karina">Karina</option>
+            <option value="Akai">Akai</option>
+            <option value="Tigreal">Tigreal</option>
+            <option value="Minotaur">Minotaur</option>
+            <option value="Fanny">Fanny</option>
+            <option value="Roger">Roger</option>
+            <option value="Clint">Clint</option>
+            <option value="Chou">Chou</option>
+            <option value="Lapu-Lapu">Lapu-Lapu</option>
+            <option value="Hilda">Hilda</option>
+            <option value="Aurora">Aurora</option>
+            <option value="Zhask">Zhask</option>
+            <option value="Cyclops">Cyclops</option>
+            <option value="Karrie">Karrie</option>
+            <option value="Johnson">Johnson</option>
+            <option value="Martis">Martis</option>
+            <option value="Gatotkaca">Gatotkaca</option>
 
-      <h2>Player Team</h2>
-      <label for="roam">Roam:</label>
-      <input type="text" id="roam" name="playerteam[roam]" required /><br />
+            <!-- Agrega más opciones según sea necesario -->
+          </select>
+          <br />
 
-      <label for="gold">Gold:</label>
-      <input type="text" id="gold" name="playerteam[gold]" required /><br />
+          <label for="heroRole">Hero Role:</label>
+          <select id="heroRole" name="heroRole" required>
+            <option value="Gold Lane">Gold Lane</option>
+            <option value="Roam">Roam</option>
+            <option value="Jungle">Jungle</option>
+            <option value="Mid Lane">Mid Lane</option>
+            <option value="Exp Lane">Exp Lane</option>
+          </select>
+          <br />
+        </div>
 
-      <label for="mid">Mid:</label>
-      <input type="text" id="mid" name="playerteam[mid]" required /><br />
+        <h2>Player Team</h2>
+        <div class="player-team">
+          <label for="roam">Roam:</label>
+          <input type="text" id="roam" name="playerteam[roam]" required />
+          <br />
 
-      <label for="jungle">Jungle:</label>
-      <input type="text" id="jungle" name="playerteam[jungle]" required /><br />
+          <label for="gold">Gold Lane:</label>
+          <input type="text" id="gold" name="playerteam[gold]" required />
+          <br />
 
-      <label for="exp">Exp:</label>
-      <input type="text" id="exp" name="playerteam[exp]" required /><br />
+          <label for="mid">Mid Lane:</label>
+          <input type="text" id="mid" name="playerteam[mid]" required />
+          <br />
 
-      <h2>Enemy Team</h2>
-      <label for="enemyRoam">Roam:</label>
-      <input type="text" id="enemyRoam" name="enemyTeam[roam]" required /><br />
+          <label for="jungle">Jungle:</label>
+          <input type="text" id="jungle" name="playerteam[jungle]" required />
+          <br />
 
-      <label for="enemyGold">Gold:</label>
-      <input type="text" id="enemyGold" name="enemyTeam[gold]" required /><br />
+          <label for="exp">Exp Lane:</label>
+          <input type="text" id="exp" name="playerteam[exp]" required />
+          <br />
+        </div>
 
-      <label for="enemyMid">Mid:</label>
-      <input type="text" id="enemyMid" name="enemyTeam[mid]" required /><br />
+        <h2>Enemy Team</h2>
+        <div class="enemy-team">
+          <label for="enemyRoam">Roam:</label>
+          <input type="text" id="enemyRoam" name="enemyTeam[roam]" required />
+          <br />
 
-      <label for="enemyJungle">Jungle:</label>
-      <input
-        type="text"
-        id="enemyJungle"
-        name="enemyTeam[jungle]"
-        required
-      /><br />
+          <label for="enemyGold">Gold Lane:</label>
+          <input type="text" id="enemyGold" name="enemyTeam[gold]" required />
+          <br />
 
-      <label for="enemyExp">Exp:</label>
-      <input type="text" id="enemyExp" name="enemyTeam[exp]" required /><br />
+          <label for="enemyMid">Mid Lane:</label>
+          <input type="text" id="enemyMid" name="enemyTeam[mid]" required />
+          <br />
 
-      <button type="submit">Submit</button>
-    </form>
+          <label for="enemyJungle">Jungle:</label>
+          <input
+            type="text"
+            id="enemyJungle"
+            name="enemyTeam[jungle]"
+            required
+          />
+          <br />
 
-    <div>
-      <h2>Create Strategy Result:</h2>
+          <label for="enemyExp">Exp Lane:</label>
+          <input type="text" id="enemyExp" name="enemyTeam[exp]" required />
+          <br />
+        </div>
 
-      <div>
-        <h3>Hero Name:</h3>
-        <div id="heroNameResult"></div>
-      </div>
+        <div class="button-container">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
 
-      <div>
-        <h3>Equipment:</h3>
-        <div id="equipmentResult"></div>
-      </div>
-
-      <div>
-        <h3>Battle Spell:</h3>
-        <div id="battleSpellResult"></div>
-      </div>
-
-      <div>
-        <h3>Emblem:</h3>
-        <div id="emblemResult"></div>
+      <div class="strategy-result">
+        <h2>Create Strategy Result:</h2>
+        <!-- Lista para mostrar los resultados -->
+        <ul id="searchResults"></ul>
       </div>
     </div>
   </body>
