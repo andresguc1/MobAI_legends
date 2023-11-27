@@ -44,9 +44,10 @@ const formatPrompt = async (formData) => {
     enemyteamJungle: formData.enemyTeam.jungle,
     enemyteamExp: formData.enemyTeam.exp,
   })
-  
+
   return formattedPrompt
 }
+
 const createStrategy = async (req, res) => {
   try {
     const formData = req.body
@@ -57,8 +58,15 @@ const createStrategy = async (req, res) => {
 
     const formattedPrompt = await formatPrompt(formData)
 
-    const response = await llm.call(formattedPrompt)
+    // Declare the response variable here
+    let response
+
+    // Assign a value to the response variable
+    response = await llm.call(formattedPrompt)
+
+    // Now you can log the response
     console.log(response)
+
     res.send(response)
   } catch (error) {
     console.error('Error in createStrategy:', error.message)

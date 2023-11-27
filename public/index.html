@@ -3,147 +3,89 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Hero Info Input</title>
+    <link rel="stylesheet" href="./styles.css" />
+    <script src="./index.js" defer></script>
+    <title>Mobia Manager</title>
   </head>
   <body>
-    <h1>Enter Hero Info</h1>
-    <form id="heroForm" onsubmit="submitForm(event)">
-      <label for="heroName">Hero Name:</label>
-      <input type="text" id="heroName" name="heroName" required /><br />
+    <h1>Welcome to MOBIA</h1>
 
-      <label for="heroRole">Hero Role:</label>
-      <input type="text" id="heroRole" name="heroRole" required /><br />
+    <div class="container">
+      <h2>Enter Hero Info</h2>
+      <form id="heroForm" onsubmit="submitForm(event)">
+        <div class="hero-info">
+          <label for="heroName">Hero Name:</label>
+          <select id="heroName" name="heroName" required></select>
+          <br />
 
-      <h2>Player Team</h2>
-      <label for="roam">Roam:</label>
-      <input type="text" id="roam" name="playerteam[roam]" required /><br />
+          <label for="heroRole">Hero Role:</label>
+          <select id="heroRole" name="heroRole" required></select>
+          <br />
+        </div>
 
-      <label for="gold">Gold:</label>
-      <input type="text" id="gold" name="playerteam[gold]" required /><br />
+        <h2>Player Team</h2>
+        <div class="player-team">
+          <label for="playerTeamRoam">Roam:</label>
+          <select id="playerTeamRoam" name="playerteam[roam]" required></select>
+          <br />
 
-      <label for="mid">Mid:</label>
-      <input type="text" id="mid" name="playerteam[mid]" required /><br />
+          <label for="playerTeamGold">Gold Lane:</label>
+          <select id="playerTeamGold" name="playerteam[gold]" required></select>
+          <br />
 
-      <label for="jungle">Jungle:</label>
-      <input type="text" id="jungle" name="playerteam[jungle]" required /><br />
+          <label for="playerTeamMid">Mid Lane:</label>
+          <select id="playerTeamMid" name="playerteam[mid]" required></select>
+          <br />
 
-      <label for="exp">Exp:</label>
-      <input type="text" id="exp" name="playerteam[exp]" required /><br />
+          <label for="playerTeamJungle">Jungle:</label>
+          <select
+            id="playerTeamJungle"
+            name="playerteam[jungle]"
+            required
+          ></select>
+          <br />
 
-      <h2>Enemy Team</h2>
-      <label for="enemyRoam">Roam:</label>
-      <input type="text" id="enemyRoam" name="enemyTeam[roam]" required /><br />
+          <label for="playerTeamExp">Exp Lane:</label>
+          <select id="playerTeamExp" name="playerteam[exp]" required></select>
+          <br />
+        </div>
 
-      <label for="enemyGold">Gold:</label>
-      <input type="text" id="enemyGold" name="enemyTeam[gold]" required /><br />
+        <h2>Enemy Team</h2>
+        <div class="enemy-team">
+          <label for="enemyTeamRoam">Roam:</label>
+          <select id="enemyTeamRoam" name="enemyTeam[roam]" required></select>
+          <br />
 
-      <label for="enemyMid">Mid:</label>
-      <input type="text" id="enemyMid" name="enemyTeam[mid]" required /><br />
+          <label for="enemyTeamGold">Gold Lane:</label>
+          <select id="enemyTeamGold" name="enemyTeam[gold]" required></select>
+          <br />
 
-      <label for="enemyJungle">Jungle:</label>
-      <input
-        type="text"
-        id="enemyJungle"
-        name="enemyTeam[jungle]"
-        required
-      /><br />
+          <label for="enemyTeamMid">Mid Lane:</label>
+          <select id="enemyTeamMid" name="enemyTeam[mid]" required></select>
+          <br />
 
-      <label for="enemyExp">Exp:</label>
-      <input type="text" id="enemyExp" name="enemyTeam[exp]" required /><br />
+          <label for="enemyTeamJungle">Jungle:</label>
+          <select
+            id="enemyTeamJungle"
+            name="enemyTeam[jungle]"
+            required
+          ></select>
+          <br />
 
-      <button type="submit">Submit</button>
-    </form>
+          <label for="enemyTeamExp">Exp Lane:</label>
+          <select id="enemyTeamExp" name="enemyTeam[exp]" required></select>
+          <br />
+        </div>
 
-    <div>
-      <h2>Create Strategy Result:</h2>
+        <div class="button-container">
+          <button type="submit">Submit</button>
+        </div>
+      </form>
 
-      <div>
-        <h3>Hero Name:</h3>
-        <div id="heroNameResult"></div>
-      </div>
-
-      <div>
-        <h3>Equipment:</h3>
-        <div id="equipmentResult"></div>
-      </div>
-
-      <div>
-        <h3>Battle Spell:</h3>
-        <div id="battleSpellResult"></div>
-      </div>
-
-      <div>
-        <h3>Emblem:</h3>
-        <div id="emblemResult"></div>
-      </div>
-
-      <div>
-        <h3>Strategy:</h3>
-        <pre id="strategyResult"></pre>
+      <div class="strategy-result">
+        <h2>Create Strategy Result:</h2>
+        <ul id="searchResults"></ul>
       </div>
     </div>
-
-    <script>
-      async function submitForm(event) {
-        event.preventDefault()
-
-        const heroData = {
-          heroName: document.getElementById('heroName').value,
-          heroRole: document.getElementById('heroRole').value,
-          playerteam: {
-            roam: document.getElementById('roam').value,
-            gold: document.getElementById('gold').value,
-            mid: document.getElementById('mid').value,
-            jungle: document.getElementById('jungle').value,
-            exp: document.getElementById('exp').value,
-          },
-          enemyTeam: {
-            roam: document.getElementById('enemyRoam').value,
-            gold: document.getElementById('enemyGold').value,
-            mid: document.getElementById('enemyMid').value,
-            jungle: document.getElementById('enemyJungle').value,
-            exp: document.getElementById('enemyExp').value,
-          },
-        }
-
-        try {
-          const response = await fetch('/createStrategy', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(heroData),
-          })
-
-          if (response.ok) {
-            const createStrategyResult = await response.json()
-
-            document.getElementById(
-              'heroNameResult'
-            ).innerText = `Hero Name: ${createStrategyResult.heroName}`
-            document.getElementById(
-              'equipmentResult'
-            ).innerText = `Equipment: ${createStrategyResult.equipment}`
-            document.getElementById(
-              'battleSpellResult'
-            ).innerText = `Battle Spell: ${createStrategyResult.battleSpell}`
-            document.getElementById(
-              'emblemResult'
-            ).innerText = `Emblem: ${createStrategyResult.emblem}`
-            document.getElementById(
-              'strategyResult'
-            ).innerText = `Strategy: ${JSON.stringify(
-              createStrategyResult.strategy,
-              null,
-              2
-            )}`
-          } else {
-            console.error('Error in submitForm:', response.statusText)
-          }
-        } catch (error) {
-          console.error('Error in submitForm:', error.message)
-        }
-      }
-    </script>
   </body>
 </html>
