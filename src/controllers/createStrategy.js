@@ -2,10 +2,10 @@ const { PromptTemplate } = require('langchain/prompts')
 const { OpenAI } = require('langchain/llms/openai')
 
 // Incluir tu clave API usando variables de entorno u otro método seguro de configuración
-const openaiApiKey = process.env.OPENAI_API_KEY
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY
 
 const llm = new OpenAI({
-  apiKey: openaiApiKey,
+  apiKey: OPENAI_API_KEY,
 })
 
 const formatPrompt = async (formData) => {
@@ -17,7 +17,7 @@ const formatPrompt = async (formData) => {
     .join(', ')
 
   const promptTemplate =
-    'As an expert in Mobile Legends, your task is to provide an optimized battle equiment' +
+    'As an expert in Mobile Legends, your task is to provide an optimized battle equiment ' +
     'for the hero {hero} in the role of {role}. ' +
     'Your team: Roam: {playerteamRoam}, Gold: {playerteamGold}, Mid: {playerteamMid}, Jungle: ' +
     '{playerteamJungle}, Exp: {playerteamExp}. Enemy team: Roam: {enemyteamRoam}, ' +
@@ -48,30 +48,20 @@ const formatPrompt = async (formData) => {
   return formattedPrompt
 }
 
-const createStrategy = async (req, res) => {
+const executeFunctionInCreateStrategy = async (req, res) => {
   try {
     const formData = req.body
 
-    if (!formData || !formData.playerteam) {
-      throw new Error('Invalid form data. Missing playerteam information.')
-    }
+    const sugestStrategy = await formatPrompt(formData)
+    console.log(sugestStrategy)
 
-    const formattedPrompt = await formatPrompt(formData)
-
-    // Declare the response variable here
-    let response
-
-    // Assign a value to the response variable
-    response = await llm.call(formattedPrompt)
-
-    // Now you can log the response
-    console.log(response)
-
-    res.send(response)
+    res.send({ result: 'Function executed successfully' })
   } catch (error) {
-    console.error('Error in createStrategy:', error.message)
+    console.error('Error in executeFunctionInCreateStrategy:', error.message)
     res.status(500).send('Internal Server Error')
   }
 }
 
-module.exports = createStrategy
+module.exports = {
+  executeFunctionInCreateStrategy: executeFunctionInCreateStrategy,
+}
