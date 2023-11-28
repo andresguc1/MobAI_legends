@@ -12,7 +12,7 @@
 
     <div class="container">
       <h2>Enter Hero Info</h2>
-      <form id="heroForm" onsubmit="submitForm(event)">
+      <form id="heroForm">
         <div class="hero-info">
           <label for="heroName">Hero Name:</label>
           <select id="heroName" name="heroName" required></select>
@@ -78,9 +78,49 @@
         </div>
 
         <div class="button-container">
-          <button type="submit">Submit</button>
+          <button id="executeButton" type="submit">Submit</button>
         </div>
       </form>
+
+      <script>
+        document
+          .getElementById('heroForm')
+          .addEventListener('submit', async (event) => {
+            event.preventDefault()
+
+            const formData = {
+              heroName: document.getElementById('heroName').value,
+              heroRole: document.getElementById('heroRole').value,
+              playerteam: {
+                roam: document.getElementById('playerTeamRoam').value,
+                gold: document.getElementById('playerTeamGold').value,
+                mid: document.getElementById('playerTeamMid').value,
+                jungle: document.getElementById('playerTeamJungle').value,
+                exp: document.getElementById('playerTeamExp').value,
+              },
+              enemyTeam: {
+                roam: document.getElementById('enemyTeamRoam').value,
+                gold: document.getElementById('enemyTeamGold').value,
+                mid: document.getElementById('enemyTeamMid').value,
+                jungle: document.getElementById('enemyTeamJungle').value,
+                exp: document.getElementById('enemyTeamExp').value,
+              },
+            }
+
+            console.log('FormData enviado al servidor:', formData)
+
+            const response = await fetch('/create-strategy', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(formData),
+            })
+
+            const result = await response.json()
+            console.log(result)
+          })
+      </script>
 
       <div class="strategy-result">
         <h2>Create Strategy Result:</h2>
