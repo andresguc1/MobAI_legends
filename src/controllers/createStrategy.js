@@ -29,8 +29,8 @@ const formatPrompt = async (formData) => {
     '"battle spell": "", ' +
     '"emblem": "", '
 
-  const prompt = PromptTemplate.fromTemplate(promptTemplate)
-  const formattedPrompt = await prompt.format({
+  const formatedPrompt = PromptTemplate.fromTemplate(promptTemplate)
+  const strategyPrompt = await formatedPrompt.format({
     hero: formData.heroName,
     role: formData.heroRole,
     playerteamRoam: formData.playerteam.roam,
@@ -45,15 +45,17 @@ const formatPrompt = async (formData) => {
     enemyteamExp: formData.enemyTeam.exp,
   })
 
-  return formattedPrompt
+  return strategyPrompt
 }
 
 const executeFunctionInCreateStrategy = async (req, res) => {
   try {
     const formData = req.body
 
-    const sugestStrategy = await formatPrompt(formData)
-    console.log(sugestStrategy)
+    const gameInfo = await formatPrompt(formData)
+    
+    const suggestedStrategy = await llm.call(gameInfo)
+    console.log(suggestedStrategy)
 
     res.send({ result: 'Function executed successfully' })
   } catch (error) {
