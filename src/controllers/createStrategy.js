@@ -1,4 +1,3 @@
-const { PromptTemplate } = require('langchain/prompts')
 const { OpenAI } = require('langchain/llms/openai')
 
 // Incluir tu clave API usando variables de entorno u otro método seguro de configuración
@@ -9,43 +8,21 @@ const llm = new OpenAI({
 })
 
 const formatPrompt = async (formData) => {
-  // Assuming formData.equipment is an array, or you can modify this based on your actual data structure
-  const equipmentArray = formData.equipment || []
-
-  const equipmentString = equipmentArray
-    .map((item) => `"${item.name} (${item.type})"`)
-    .join(', ')
-
   const promptTemplate =
-    'As an expert in Mobile Legends, your task is to provide an optimized battle equiment ' +
-    'for the hero {hero} in the role of {role}. ' +
-    'Your team: Roam: {playerteamRoam}, Gold: {playerteamGold}, Mid: {playerteamMid}, Jungle: ' +
-    '{playerteamJungle}, Exp: {playerteamExp}. Enemy team: Roam: {enemyteamRoam}, ' +
-    ' Gold: {enemyteamGold}, Mid: {enemyteamMid}, Jungle: {enemyteamJungle}, Exp: {enemyteamExp}. ' +
-    'Generate a JSON format with the following structure: ' +
-    '"heroName": "{hero}", "equipment": [] ' +
-    equipmentString +
-    ', ' +
-    '"battle spell": "", ' +
-    '"emblem": "", '
+    'Mobile Legends equipment optimization task: Provide the optimal equipment Build names for each hero in the Player Team. ' +
+    'Consider the unique abilities of each hero. ' +
+    'Team: Roam: {playerteamRoam}, Gold: {playerteamGold}, Mid: {playerteamMid}, Jungle: {playerteamJungle}, Exp: {playerteamExp}. ' +
+    'Generate a JSON format with the recommended equipment for each hero in the Player Team: ' +
+    '{"Tank": {"equipment": []}, "Fighter": {"equipment": []}, "Assassin": {"equipment": []}, ' +
+    '"Marksman": {"equipment": []}, "Support": {"equipment": []},}'
 
-  const formatedPrompt = PromptTemplate.fromTemplate(promptTemplate)
-  const strategyPrompt = await formatedPrompt.format({
-    hero: formData.heroName,
-    role: formData.heroRole,
-    playerteamRoam: formData.playerteam.roam,
-    playerteamGold: formData.playerteam.gold,
-    playerteamMid: formData.playerteam.mid,
-    playerteamJungle: formData.playerteam.jungle,
-    playerteamExp: formData.playerteam.exp,
-    enemyteamRoam: formData.enemyTeam.roam,
-    enemyteamGold: formData.enemyTeam.gold,
-    enemyteamMid: formData.enemyTeam.mid,
-    enemyteamJungle: formData.enemyTeam.jungle,
-    enemyteamExp: formData.enemyTeam.exp,
-  })
+  const formattedPrompt = promptTemplate.replace(/\s+/g, ' ').trim()
+  const equipmentBuildPrompt = formattedPrompt.replace(
+    /{(\w+)}/g,
+    (match, p1) => formData.playerteam[p1.toLowerCase()]
+  )
 
-  return strategyPrompt
+  return equipmentBuildPrompt
 }
 
 const executeFunctionInCreateStrategy = async (req, res) => {
@@ -53,7 +30,7 @@ const executeFunctionInCreateStrategy = async (req, res) => {
     const formData = req.body
 
     const gameInfo = await formatPrompt(formData)
-    
+
     const suggestedStrategy = await llm.call(gameInfo)
     console.log(suggestedStrategy)
 
