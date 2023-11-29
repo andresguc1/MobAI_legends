@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
   const heroOptions = [
+    // Lista de héroes
     { value: '', text: 'Select Hero' }, // Opción por defecto
     { value: 'Miya', text: 'Miya' },
     { value: 'Balmond', text: 'Balmond' },
@@ -149,112 +150,37 @@ document.addEventListener('DOMContentLoaded', function () {
   populateSelectOptions('enemyTeamJungle', heroOptions)
   populateSelectOptions('enemyTeamExp', heroOptions)
 
-  // Inicializar seguimiento de héroes y roles seleccionados
-  const selectedHeroes = {}
-  const selectedRoles = {}
-
-  // Agregar eventos de cambio para Hero Name y Hero Role
-  document.getElementById('heroName').addEventListener('change', function () {
-    updateTeams()
-  })
-
-  document.getElementById('heroRole').addEventListener('change', function () {
-    updateTeams()
-  })
-
   // Llamada inicial para establecer los valores predeterminados
   updateTeams()
 
   async function submitForm(event) {
     // Resto del código de la función submitForm
   }
-
   function populateSelectOptions(selectId, options) {
     const selectElement = document.getElementById(selectId)
 
-    // Limpiar opciones existentes
-    selectElement.innerHTML = ''
+    // Asegurarse de que el elemento existe antes de manipularlo
+    if (selectElement) {
+      // Limpiar opciones existentes
+      selectElement.innerHTML = ''
 
-    // Crear y agregar opción por defecto
-    const defaultOption = document.createElement('option')
-    defaultOption.value = ''
-    defaultOption.textContent = options[0].text
-    selectElement.appendChild(defaultOption)
+      // Crear y agregar opción por defecto
+      const defaultOption = document.createElement('option')
+      defaultOption.value = ''
+      defaultOption.textContent = options[0].text
+      selectElement.appendChild(defaultOption)
 
-    // Crear y agregar nuevas opciones
-    options.slice(1).forEach((option) => {
-      const optionElement = document.createElement('option')
-      optionElement.value = option.value
-      optionElement.textContent = option.text
-      selectElement.appendChild(optionElement)
-    })
+      // Crear y agregar nuevas opciones
+      options.slice(1).forEach((option) => {
+        const optionElement = document.createElement('option')
+        optionElement.value = option.value
+        optionElement.textContent = option.text
+        selectElement.appendChild(optionElement)
+      })
+    }
   }
 
   function updateTeams() {
-    const selectedHero = document.getElementById('heroName').value
-    const selectedRole = document.getElementById('heroRole').value
-
-    // Actualizar el contenedor del equipo del jugador
-    updateTeam('playerTeam', selectedRole, selectedHero)
-
-    // Actualizar el contenedor del equipo del enemigo
-    const enemyRole = getEnemyRole(selectedRole)
-    updateTeam('enemyTeam', enemyRole, '')
-  }
-
-  function updateTeam(teamType, role, hero) {
-    const teamRoam = document.getElementById(`${teamType}Roam`)
-    const teamGold = document.getElementById(`${teamType}Gold`)
-    const teamMid = document.getElementById(`${teamType}Mid`)
-    const teamJungle = document.getElementById(`${teamType}Jungle`)
-    const teamExp = document.getElementById(`${teamType}Exp`)
-
-    // Limpiar valores existentes
-    teamRoam.value = ''
-    teamGold.value = ''
-    teamMid.value = ''
-    teamJungle.value = ''
-    teamExp.value = ''
-
-    // Actualizar el héroe seleccionado para el rol correspondiente
-    selectedHeroes[role] = hero
-
-    // Actualizar el contenedor del equipo
-    switch (role) {
-      case 'Roam':
-        teamRoam.value = hero
-        break
-      case 'Gold Lane':
-        teamGold.value = hero
-        break
-      case 'Mid Lane':
-        teamMid.value = hero
-        break
-      case 'Jungle':
-        teamJungle.value = hero
-        break
-      case 'Exp Lane':
-        teamExp.value = hero
-        break
-      default:
-        break
-    }
-  }
-
-  function getEnemyRole(playerRole) {
-    switch (playerRole) {
-      case 'Gold Lane':
-        return 'Exp Lane'
-      case 'Roam':
-        return 'Mid Lane'
-      case 'Jungle':
-        return 'Jungle'
-      case 'Mid Lane':
-        return 'Roam'
-      case 'Exp Lane':
-        return 'Gold Lane'
-      default:
-        return ''
-    }
+    // Resto del código de la función updateTeams
   }
 })
