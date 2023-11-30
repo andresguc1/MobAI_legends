@@ -36,10 +36,9 @@ async function buildIdentifier(formData) {
   })
 
   const suggestedbuild = await llm.call(formatedPromptTemplateBuild)
-  console.log(suggestedbuild)
+  // console.log(suggestedbuild)
   return suggestedbuild
 }
-
 
 // Identify team emblems and battle spell
 async function spellIdentifier(formData) {
@@ -69,27 +68,59 @@ async function spellIdentifier(formData) {
   })
 
   const suggestedSpell = await llm.call(formatedPromptTemplateSpell)
-  console.log(suggestedSpell)
+  // console.log(suggestedSpell)
   return suggestedSpell
 }
 
+// Identify enemy team strategy
+async function IdentifyEnemyBuild(formData) {
+  const promptTemplateEnemyBuild = new PromptTemplate({
+    template:
+      'As a Mobile Legends expert, review a list of heroes ' +
+      '{enemyTeam1}, {enemyTeam2}, {enemyTeam3}, {enemyTeam4}, {enemyTeam5}' +
+      'your tasks are analyses Team members  and define most powerful team configuration' +
+      '"name": ""' +
+      '"role": (roam, gold, mid, jungle, exp)' +
+      '"spell": ""' +
+      'Provide the anwswer as a JSON format',
+    inputVariables: [
+      'enemyTeam1',
+      'enemyTeam2',
+      'enemyTeam3',
+      'enemyTeam4',
+      'enemyTeam5',
+    ],
+  })
 
+  const formatedPromptTemplateEnemyBuild =
+    await promptTemplateEnemyBuild.format({
+      enemyTeam1: formData.enemyTeam.enemyTeam1,
+      enemyTeam2: formData.enemyTeam.enemyTeam2,
+      enemyTeam3: formData.enemyTeam.enemyTeam3,
+      enemyTeam4: formData.enemyTeam.enemyTeam4,
+      enemyTeam5: formData.enemyTeam.enemyTeam5,
+    })
+
+  console.log(formatedPromptTemplateEnemyBuild)
+
+  const suggestedEnemyBuild = await llm.call(formatedPromptTemplateEnemyBuild)
+  console.log(suggestedEnemyBuild)
+  return suggestedEnemyBuild
+}
 
 // ---
 
 const executeFunctionInCreateStrategy = async (req, res) => {
   try {
     const formData = req.body
-    
+
     const sugestedBuild = buildIdentifier(formData)
     const sugestedSpell = spellIdentifier(formData)
-    console.log(sugestedBuild)
+    const sugestedEnemyBuild = IdentifyEnemyBuild(formData)
+
+    console.log(sugestedEnemyBuild)
     console.log(sugestedSpell)
-
-
-    // const suggestedStrategy = await llm.call(gameInfo)
-    // console.log(suggestedStrategy)
-
+    console.log(sugestedBuild)
     res.send({ result: 'Function executed successfully' })
   } catch (error) {
     console.error('Error in executeFunctionInCreateStrategy:', error.message)
