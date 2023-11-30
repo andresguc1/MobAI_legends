@@ -1,4 +1,5 @@
-const { OpenAI } = require('langchain/llms/openai')
+import { OpenAI } from 'langchain/llms/openai'
+import { PromptTemplate } from 'langchain/prompts'
 
 // Incluir tu clave API usando variables de entorno u otro método seguro de configuración
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY
@@ -7,32 +8,87 @@ const llm = new OpenAI({
   apiKey: OPENAI_API_KEY,
 })
 
-const formatPrompt = async (formData) => {
-  const promptTemplate =
-    'Mobile Legends equipment optimization task: Provide the optimal equipment Build names for each hero in the Player Team. ' +
-    'Consider the unique abilities of each hero. ' +
-    'Team: Roam: {playerteamRoam}, Gold: {playerteamGold}, Mid: {playerteamMid}, Jungle: {playerteamJungle}, Exp: {playerteamExp}. ' +
-    'Generate a JSON format with the recommended equipment for each hero in the Player Team: ' +
-    '{"Tank": {"equipment": []}, "Fighter": {"equipment": []}, "Assassin": {"equipment": []}, ' +
-    '"Marksman": {"equipment": []}, "Support": {"equipment": []},}'
+// Identify team build
+async function buildIdentifier(formData) {
+  const promptTemplateBuild = new PromptTemplate({
+    template:
+      'As a Mobile Legends expert, provide the optimal equipment build names ' +
+      'for each hero in the Player Team. Consider the unique abilities of each hero.  ' +
+      'Team: Roam: {playerteamRoam}, Gold: {playerteamGold}, Mid: {playerteamMid}' +
+      'Jungle: {playerteamJungle}, Exp: {playerteamExp}.  ' +
+      'Generate a JSON format that contains parent key  rolename that contains recommended ' +
+      'equipment for each hero in a battle',
+    inputVariables: [
+      'playerteamRoam',
+      'playerteamGold',
+      'playerteamMid',
+      'playerteamJungle',
+      'playerteamExp',
+    ],
+  })
 
-  const formattedPrompt = promptTemplate.replace(/\s+/g, ' ').trim()
-  const equipmentBuildPrompt = formattedPrompt.replace(
-    /{(\w+)}/g,
-    (match, p1) => formData.playerteam[p1.toLowerCase()]
-  )
+  const formatedPromptTemplateBuild = await promptTemplateBuild.format({
+    playerteamRoam: formData.playerteam.roam,
+    playerteamGold: formData.playerteam.gold,
+    playerteamMid: formData.playerteam.mid,
+    playerteamJungle: formData.playerteam.jungle,
+    playerteamExp: formData.playerteam.exp,
+  })
 
-  return equipmentBuildPrompt
+  const suggestedbuild = await llm.call(formatedPromptTemplateBuild)
+  console.log(suggestedbuild)
+  return suggestedbuild
 }
+
+
+// Identify team emblems and battle spell
+async function spellIdentifier(formData) {
+  const promptTemplateSpell = new PromptTemplate({
+    template:
+      'As a Mobile Legends expert, provide the optimal emblems and battle spell names ' +
+      'for each hero in the Player Team. Consider the unique abilities of each hero.  ' +
+      'Team: Roam: {playerteamRoam}, Gold: {playerteamGold}, Mid: {playerteamMid}' +
+      'Jungle: {playerteamJungle}, Exp: {playerteamExp}.  ' +
+      'Generate a JSON format that contains parent key  rolename that contains recommended ' +
+      'emblems and battle spell',
+    inputVariables: [
+      'playerteamRoam',
+      'playerteamGold',
+      'playerteamMid',
+      'playerteamJungle',
+      'playerteamExp',
+    ],
+  })
+
+  const formatedPromptTemplateSpell = await promptTemplateSpell.format({
+    playerteamRoam: formData.playerteam.roam,
+    playerteamGold: formData.playerteam.gold,
+    playerteamMid: formData.playerteam.mid,
+    playerteamJungle: formData.playerteam.jungle,
+    playerteamExp: formData.playerteam.exp,
+  })
+
+  const suggestedSpell = await llm.call(formatedPromptTemplateSpell)
+  console.log(suggestedSpell)
+  return suggestedSpell
+}
+
+
+
+// ---
 
 const executeFunctionInCreateStrategy = async (req, res) => {
   try {
     const formData = req.body
+    
+    const sugestedBuild = buildIdentifier(formData)
+    const sugestedSpell = spellIdentifier(formData)
+    console.log(sugestedBuild)
+    console.log(sugestedSpell)
 
-    const gameInfo = await formatPrompt(formData)
 
-    const suggestedStrategy = await llm.call(gameInfo)
-    console.log(suggestedStrategy)
+    // const suggestedStrategy = await llm.call(gameInfo)
+    // console.log(suggestedStrategy)
 
     res.send({ result: 'Function executed successfully' })
   } catch (error) {
@@ -41,6 +97,4 @@ const executeFunctionInCreateStrategy = async (req, res) => {
   }
 }
 
-module.exports = {
-  executeFunctionInCreateStrategy: executeFunctionInCreateStrategy,
-}
+export { executeFunctionInCreateStrategy }
