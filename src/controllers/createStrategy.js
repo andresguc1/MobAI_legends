@@ -1,4 +1,5 @@
-const { OpenAI } = require('langchain/llms/openai')
+import { OpenAI } from 'langchain/llms/openai'
+import { PromptTemplate } from 'langchain/prompts'
 
 // Incluir tu clave API usando variables de entorno u otro método seguro de configuración
 const OPENAI_API_KEY = process.env.OPENAI_API_KEY
@@ -8,21 +9,28 @@ const llm = new OpenAI({
 })
 
 const formatPrompt = async (formData) => {
-  const promptTemplate =
-    'Mobile Legends equipment optimization task: Provide the optimal equipment Build names for each hero in the Player Team. ' +
-    'Consider the unique abilities of each hero. ' +
-    'Team: Roam: {playerteamRoam}, Gold: {playerteamGold}, Mid: {playerteamMid}, Jungle: {playerteamJungle}, Exp: {playerteamExp}. ' +
-    'Generate a JSON format with the recommended equipment for each hero in the Player Team: ' +
-    '{"Tank": {"equipment": []}, "Fighter": {"equipment": []}, "Assassin": {"equipment": []}, ' +
-    '"Marksman": {"equipment": []}, "Support": {"equipment": []},}'
+  console.log(formData)
 
-  const formattedPrompt = promptTemplate.replace(/\s+/g, ' ').trim()
-  const equipmentBuildPrompt = formattedPrompt.replace(
-    /{(\w+)}/g,
-    (match, p1) => formData.playerteam[p1.toLowerCase()]
-  )
+  const promptTemplateBuild = new PromptTemplate({
+    template:
+      `As a Mobile Legends expert, provide the optimal equipment build names ` +
+      `for each hero in the Player Team. ` +
+      `Consider the unique abilities of each hero. ` +
+      `Team: Roam: {playerteamRoam}, Gold: {playerteamGold}, Mid: {playerteamMid}, ` +
+      `Jungle: {playerteamJungle}, Exp: {playerteamExp}. ` +
+      `Generate a JSON format with the recommended equipment for each hero in the Player Team: ` +
+      `{"Tank": {"equipment": []}, "Fighter": {"equipment": []}, "Assassin": {"equipment": []}, ` +
+      `"Marksman": {"equipment": []}, "Support": {"equipment": []},}`,
+    inputVariables: [
+      'playerteamRoam',
+      'playerteamGold',
+      'playerteamMid',
+      'playerteamJungle',
+      'playerteamExp',
+    ],
+  })
 
-  return equipmentBuildPrompt
+  console.log(promptTemplateBuild)
 }
 
 const executeFunctionInCreateStrategy = async (req, res) => {
@@ -41,6 +49,4 @@ const executeFunctionInCreateStrategy = async (req, res) => {
   }
 }
 
-module.exports = {
-  executeFunctionInCreateStrategy: executeFunctionInCreateStrategy,
-}
+export { executeFunctionInCreateStrategy }
