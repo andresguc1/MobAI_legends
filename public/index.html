@@ -41,24 +41,24 @@
 
       <h2>Enemy Team</h2>
       <div class="enemy-team">
-        <label for="enemyTeamRoam">Roam:</label>
-        <select id="enemyTeamRoam" name="enemyTeam[roam]" required></select>
+        <label for="enemyTeam1">enemy 1:</label>
+        <select id="enemyTeam1" name="enemyTeam[uno]" required></select>
         <br />
 
-        <label for="enemyTeamGold">Gold Lane:</label>
-        <select id="enemyTeamGold" name="enemyTeam[gold]" required></select>
+        <label for="enemyTeam2">Enemy 2:</label>
+        <select id="enemyTeam2" name="enemyTeam[dos]" required></select>
         <br />
 
-        <label for="enemyTeamMid">Mid Lane:</label>
-        <select id="enemyTeamMid" name="enemyTeam[mid]" required></select>
+        <label for="enemyTeam3">Enemy 3:</label>
+        <select id="enemyTeam3" name="enemyTeam[tres]" required></select>
         <br />
 
-        <label for="enemyTeamJungle">Jungle:</label>
-        <select id="enemyTeamJungle" name="enemyTeam[jungle]" required></select>
+        <label for="enemyTeam4">enemy 4:</label>
+        <select id="enemyTeam4" name="enemyTeam[cuatro]" required></select>
         <br />
 
-        <label for="enemyTeamExp">Exp Lane:</label>
-        <select id="enemyTeamExp" name="enemyTeam[exp]" required></select>
+        <label for="enemyTeam5">enemy 5:</label>
+        <select id="enemyTeam5" name="enemyTeam[cinco]" required></select>
         <br />
       </div>
 
@@ -76,16 +76,16 @@
                 playerteam: {
                   roam: document.getElementById('playerTeamRoam').value,
                   gold: document.getElementById('playerTeamGold').value,
-                  mid: document.getElementById('playerTeamMid').value,
+                  mid: document.getElementById('playerTeamGold').value,
                   jungle: document.getElementById('playerTeamJungle').value,
                   exp: document.getElementById('playerTeamExp').value,
                 },
                 enemyTeam: {
-                  roam: document.getElementById('enemyTeamRoam').value,
-                  gold: document.getElementById('enemyTeamGold').value,
-                  mid: document.getElementById('enemyTeamMid').value,
-                  jungle: document.getElementById('enemyTeamJungle').value,
-                  exp: document.getElementById('enemyTeamExp').value,
+                  enemyTeam1: document.getElementById('enemyTeam1').value,
+                  enemyTeam2: document.getElementById('enemyTeam2').value,
+                  enemyTeam3: document.getElementById('enemyTeam3').value,
+                  enemyTeam4: document.getElementById('enemyTeam4').value,
+                  enemyTeam5: document.getElementById('enemyTeam5').value,
                 },
               }
 
