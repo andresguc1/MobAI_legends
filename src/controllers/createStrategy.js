@@ -36,7 +36,7 @@ async function buildIdentifier(formData) {
   })
 
   const suggestedbuild = await llm.call(formatedPromptTemplateBuild)
-  // console.log(suggestedbuild)
+  console.log(suggestedbuild)
   return suggestedbuild
 }
 
@@ -68,7 +68,7 @@ async function spellIdentifier(formData) {
   })
 
   const suggestedSpell = await llm.call(formatedPromptTemplateSpell)
-  // console.log(suggestedSpell)
+  console.log(suggestedSpell)
   return suggestedSpell
 }
 
@@ -108,6 +108,50 @@ async function IdentifyEnemyBuild(formData) {
   return suggestedEnemyBuild
 }
 
+// Identify pros ans cons
+async function IdentifyProsCons(formData) {
+  const promptTemplateProsCons = new PromptTemplate({
+    template:
+      'As a Mobile Legends expert, analice the 2 teams compotition' +
+      'Player Team: {playerteamRoam}, {playerteamGold}, {playerteamMid}, {playerteamJungle}, {playerteamExp}' +
+      'Enemy Team: {enemyTeam1}, {enemyTeam2}, {enemyTeam3}, {enemyTeam4}, {enemyTeam5}' +
+      'your tasks are analyses the 2 teams and tell the pros and cons  of the Player Team ' +
+      'Provide the anwswer as a JSON format',
+    inputVariables: [
+      'enemyTeam1',
+      'enemyTeam2',
+      'enemyTeam3',
+      'enemyTeam4',
+      'enemyTeam5',
+      'playerteamRoam',
+      'playerteamGold',
+      'playerteamMid',
+      'playerteamJungle',
+      'playerteamExp',
+    ],
+  })
+
+  const formatedPromptTemplateProsCons =
+    await promptTemplateProsCons.format({
+      enemyTeam1: formData.enemyTeam.enemyTeam1,
+      enemyTeam2: formData.enemyTeam.enemyTeam2,
+      enemyTeam3: formData.enemyTeam.enemyTeam3,
+      enemyTeam4: formData.enemyTeam.enemyTeam4,
+      enemyTeam5: formData.enemyTeam.enemyTeam5,
+      playerteamRoam: formData.playerteam.roam,
+      playerteamGold: formData.playerteam.gold,
+      playerteamMid: formData.playerteam.mid,
+      playerteamJungle: formData.playerteam.jungle,
+      playerteamExp: formData.playerteam.exp,
+    })
+
+  console.log(formatedPromptTemplateProsCons)
+
+  const identifiedProsCons = await llm.call(formatedPromptTemplateProsCons)
+  console.log(identifiedProsCons)
+  return identifiedProsCons
+}
+
 // ---
 
 const executeFunctionInCreateStrategy = async (req, res) => {
@@ -117,10 +161,16 @@ const executeFunctionInCreateStrategy = async (req, res) => {
     const sugestedBuild = buildIdentifier(formData)
     const sugestedSpell = spellIdentifier(formData)
     const sugestedEnemyBuild = IdentifyEnemyBuild(formData)
+    const battleAnalisis = IdentifyProsCons(formData)
 
-    console.log(sugestedEnemyBuild)
-    console.log(sugestedSpell)
+    // console.log(battleAnalisis)
+    // console.log('============')
+    // console.log(sugestedEnemyBuild)
+    // console.log('============')
+    // console.log(sugestedSpell)
+    // console.log('============')
     console.log(sugestedBuild)
+    console.log('============')
     res.send({ result: 'Function executed successfully' })
   } catch (error) {
     console.error('Error in executeFunctionInCreateStrategy:', error.message)
